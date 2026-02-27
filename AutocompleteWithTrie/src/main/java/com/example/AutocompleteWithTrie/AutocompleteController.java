@@ -14,14 +14,21 @@ import java.util.List;
 public class AutocompleteController {
 
     private final TrieService trieService;
+    private final AutoCompleteService autoCompleteService;
 
     @Autowired
-    public AutocompleteController(TrieService trieService) {
+    public AutocompleteController(TrieService trieService,AutoCompleteService autoCompleteService) {
         this.trieService = trieService;
+        this.autoCompleteService = autoCompleteService;
     }
     @GetMapping
     public List<String> getSuggestions(@RequestParam String prefix) {
-        // We'll connect this to our Trie soon
         return trieService.findSuggestions(prefix);
+    }
+
+    @GetMapping("/personalized")
+    public List<String> getPersonalizedSuggestions(@RequestParam String prefix,
+                                                   @RequestParam String userId) {
+        return autoCompleteService.getPersonalizedSuggestions(prefix, userId);
     }
 }
